@@ -7,26 +7,29 @@ For LinkedIn SDK, check out [joonhocho/react-native-linkedin-sdk](https://github
 
 ## Getting started
 
-Tested with React Native 0.39 and 0.40. Also, see [Tested Environments](#tested-environments).
+Tested with React Native 0.39, 0.40 and 0.51 Also, see [Tested Environments](#tested-environments).
 Let me know if some instructions are missing.
 
 `$ react-native install react-native-google-sign-in`
 
-
 ## Android
+
 Follow Google's official instructions for [Android](https://developers.google.com/identity/sign-in/android/start-integrating).
 
 Follow everything from the instructions with the following modifications.
 Some of the following modifications should be done by `react-native install` automatically. If not, do it yourself:
- - Move `google-services.json` to `{YourApp}/android/app/google-services.json`.
- 
- - Add to your `{YourApp}/android/settings.gradle`:
+
+* Move `google-services.json` to `{YourApp}/android/app/google-services.json`.
+
+* Add to your `{YourApp}/android/settings.gradle`:
+
 ```
 include ':react-native-google-sign-in'
 project(':react-native-google-sign-in').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-sign-in/android')
 ```
 
- - Modify your `{YourApp}/android/build.gradle`:
+* Modify your `{YourApp}/android/build.gradle`:
+
 ```
 dependencies {
     classpath 'com.android.tools.build:gradle:2.2.3' // This may need to be updated to >= 2.2.3.
@@ -34,12 +37,13 @@ dependencies {
 }
 ```
 
- - Modify your `{YourApp}/android/app/build.gradle`:
+* Modify your `{YourApp}/android/app/build.gradle`:
+
 ```
 dependencies {
     compile(project(":react-native-google-sign-in")) { // ADD this
         exclude group: "com.google.android.gms"
-    } 
+    }
     ...your modules...
     compile "com.google.android.gms:play-services-auth:10.0.1" // Add this, not 9.8.0 (from instructions).
     compile "com.facebook.react:react-native:+"
@@ -48,7 +52,8 @@ dependencies {
 apply plugin: "com.google.gms.google-services" // Add this after dependencies.
 ```
 
- - Modify your `{YourApp}/android/app/src/main/java/com/{YourApp}/MainApplication.java`:
+* Modify your `{YourApp}/android/app/src/main/java/com/{YourApp}/MainApplication.java`:
+
 ```
 import com.reactlibrary.googlesignin.RNGoogleSignInPackage; // Add this.
 
@@ -63,46 +68,50 @@ import com.reactlibrary.googlesignin.RNGoogleSignInPackage; // Add this.
         }
 ```
 
-
 ## iOS
 
 ### (prerequisite) Setup Swift Bridging Header
-- Make sure you have a Swift Bridging Header for your project. Here's [how to create one](http://www.learnswiftonline.com/getting-started/adding-swift-bridging-header/) if you don't.
-- ![](https://i.imgur.com/1XgTv5h.png)
+
+* Make sure you have a Swift Bridging Header for your project. Here's [how to create one](http://www.learnswiftonline.com/getting-started/adding-swift-bridging-header/) if you don't.
+* ![](https://i.imgur.com/1XgTv5h.png)
 
 ### Manually download and install Google SignIn SDK (Without CocoaPods)
-- At the time of writing, `Google Sign-In SDK 4.1.0` is the latest.
-- Follow Google's official instructions, [Install Google SDK *WITHOUT* CocoaPods](https://developers.google.com/identity/sign-in/ios/sdk/). I could not get it working with CocoaPods.
-- It's important to follow every instruction!
-- Make sure to properly add the following frameworks according to the Google's instructions:
-  - GoogleSignIn.bundle
-  - GoogleSignIn.framework
-  - GoogleSignInDependencies.framework
-  - SystemConfiguration.framework
-  - SafariServices.framework
-- Here are some screenshots that shows proper installations (Refer to ExampleApp):
+
+* At the time of writing, `Google Sign-In SDK 4.1.1` is the latest.
+* Follow Google's official instructions, [Install Google SDK _WITHOUT_ CocoaPods](https://developers.google.com/identity/sign-in/ios/sdk/). I could not get it working with CocoaPods.
+* It's important to follow every instruction!
+* Make sure to properly add the following frameworks according to the Google's instructions:
+  * GoogleSignIn.bundle
+  * GoogleSignIn.framework
+  * GoogleSignInDependencies.framework
+  * SystemConfiguration.framework
+  * SafariServices.framework
+* Here are some screenshots that shows proper installations (Refer to ExampleApp):
 
   ![](https://i.imgur.com/kShh5Ey.png)
   ![](https://i.imgur.com/IefwOOn.png)
   ![](https://i.imgur.com/IUMj8GF.png)
   ![](https://i.imgur.com/KwXekFn.png)
-  
-  
-- Open up your project in xcode and right click the package.
-- Click `Add files to '{YourApp}'`.
-- Select to `{YourApp}/node_modules/react-native-google-sign-in/ios/RNGoogleSignIn`.
-- Click 'Add'.
-- Click your project in the navigator on the left and go to `Build Settings`.
-- Search for `Header Search Paths`.
-- Double click on the value column.
-- Add `$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn`.
-- Screenshots:
+
+* Open up your project in xcode and right click the package.
+* Click `Add files to '{YourApp}'`.
+* Select to `{YourApp}/node_modules/react-native-google-sign-in/ios/RNGoogleSignIn`.
+* Click 'Add'.
+* Click your project in the navigator on the left and go to `Build Settings`.
+* Search for `Header Search Paths`.
+* Double click on the value column.
+* Add `$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn`.
+* Screenshots:
 
   ![](https://i.imgur.com/h8ZWoS4.png)
-  
 
+* With project still selected in the navigator go to `Info`.
+* Add a URL Type and set `Identifier` and `URL Schemese` to the REVERSED_CLIENT_ID from your GoogleService-Info.plist
+
+![](https://i.imgur.com/Yeqlzb4.png)
 
 Add to your `{YourApp}/ios/{YourApp}/AppDelegate.m`:
+
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -140,14 +149,14 @@ Add to your `{YourApp}/ios/{YourApp}/AppDelegate.m`:
 }
 ```
 
-
 Add to your `{YourApp}/ios/{YourApp}/AppDelegate.h`:
+
 ```objective-c
 #import <GoogleSignIn/GoogleSignIn.h>
 ```
 
-
 Add to your Swift Bridging Header, `{YourApp}/ios/{YourApp}-Bridging-Header.h`:
+
 ```objective-c
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
@@ -156,6 +165,7 @@ Add to your Swift Bridging Header, `{YourApp}/ios/{YourApp}-Bridging-Header.h`:
 ```
 
 Or, if you are using RN <= 0.39:
+
 ```objective-c
 #import "RCTBridgeModule.h"
 #import "RCTViewManager.h"
@@ -163,9 +173,8 @@ Or, if you are using RN <= 0.39:
 #import <GoogleSignIn/GoogleSignIn.h>
 ```
 
-
-
 ## Usage
+
 ```javascript
 import GoogleSignIn from 'react-native-google-sign-in';
 
@@ -201,7 +210,7 @@ async yourMethod() {
     // Whether to request server auth code. Make sure to provide `serverClientID`.
     // https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions.Builder.html#requestServerAuthCode(java.lang.String, boolean)
     offlineAccess: boolean,
-    
+
     // Android
     // Whether to force code for refresh token.
     // https://developers.google.com/android/reference/com/google/android/gms/auth/api/signin/GoogleSignInOptions.Builder.html#requestServerAuthCode(java.lang.String, boolean)
@@ -230,16 +239,22 @@ See [js/GoogleSignIn.ios.js](https://github.com/joonhocho/react-native-google-si
 
 See [js/GoogleSignIn.android.js](https://github.com/joonhocho/react-native-google-sign-in/blob/master/js/GoogleSignIn.android.js) for supported Android APIs.
 
-
 ## Tested Environments
 
 I only tested with the following environments:
- - Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1) / Target: x86_64-apple-macosx10.9
- - Xcode Version 8.2.1 (8C1002)
- - Android Studio 2.2.3 / Build #AI-145.3537739, built on December 2, 2016 / JRE: 1.8.0_112-release-b05 x86_64 / JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
 
+* Swift version 3.0.2 (swiftlang-800.0.63 clang-800.0.42.1) / Target: x86_64-apple-macosx10.9
+* Xcode Version 8.2.1 (8C1002)
+* Android Studio 2.2.3 / Build #AI-145.3537739, built on December 2, 2016 / JRE: 1.8.0_112-release-b05 x86_64 / JVM: OpenJDK 64-Bit Server VM by JetBrains s.r.o
+
+I tested with the following environment:
+
+* Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2) / Target: x86_64-apple-macosx10.9
+* Xcode Version 9.2 (9C40b)
+* Google Sign-In SDK 4.1.1
 
 ## LICENSE
+
 ```
 The MIT License (MIT)
 
